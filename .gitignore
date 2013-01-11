@@ -1,0 +1,8 @@
+.libs
+io.lo
+io.o
+io.slo
+mod_sq.la
+mod_sq.lo
+mod_sq.o
+mod_sq.slo
