@@ -1,7 +1,12 @@
 /**
  * Tests Squirrel sessions and _SERVER global
  */
-dofile("session.nut")
+local path = _SERVER["filename"]
+local pathend = path.find("welcome.nut")
+path = path.slice(0, pathend)
+
+// load session functions
+dofile(path + "session.nut")
 
 local id = session_id()
 if( id == null ) {
