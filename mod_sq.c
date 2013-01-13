@@ -467,7 +467,7 @@ SQInteger nreverse(HSQUIRRELVM v) {
 	int len = strlen(msg);
 	char* new = malloc(len);
 	len--;
-	for( i = 0; i < len; i++ ) {
+	for( i = 0; i <= len; i++ ) {
 		new[len - i] = msg[i];
 	}
 	new[len + 1] = '\0';
