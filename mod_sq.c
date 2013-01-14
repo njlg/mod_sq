@@ -1,7 +1,7 @@
 /**
  * mod_sq - Apache module for running Squirrel files
  *
- * Copyright 2011 Nathan Levin-Greenhaw <nathan@njlg.info>
+ * Copyright 2011-2013 Nathan Levin-Greenhaw <nathan@njlg.info>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -95,7 +95,7 @@ SQInteger print_args(HSQUIRRELVM v) {
  * Helper function to lowercase strings
  * Used for adding server variables to the _SERVER global
  */
-void toLowerCase(char* string) {
+void to_lower_case(char* string) {
 	char c;
 	int i, len = strlen(string);
 	for( i = 0; i < len; i++ ) {
@@ -112,11 +112,11 @@ void toLowerCase(char* string) {
  * Helper function to quickly grab the request_rec from
  * SQ's registry table
  */
-request_rec* getRequestRec(HSQUIRRELVM v) {
+request_rec* get_request_rec(HSQUIRRELVM v) {
 	int top;
 	SQUserPointer p;
 
-	ap_log_error(APLOG_MARK, APLOG_DEBUG, OK, NULL, "mod_sq: getRequestRec()");
+	ap_log_error(APLOG_MARK, APLOG_DEBUG, OK, NULL, "mod_sq: get_request_rec()");
 
 	top = sq_gettop(v);
 	sq_pushregistrytable(v);
@@ -137,7 +137,7 @@ request_rec* getRequestRec(HSQUIRRELVM v) {
  * Error Hanlder for Squirrel VM compiler
  */
 void compile_error_handler(HSQUIRRELVM v, const SQChar* desc, const SQChar* source, SQInteger line, SQInteger column) {
-	request_rec* r = getRequestRec(v);
+	request_rec* r = get_request_rec(v);
 
 	if( r != NULL ) {
 		// should we send error to client?
@@ -162,7 +162,7 @@ void printfunc(HSQUIRRELVM v, const SQChar* s, ...) {
 	vsprintf(buffer, s, vl);
 	va_end(vl);
 
-	request_rec* r = getRequestRec(v);
+	request_rec* r = get_request_rec(v);
 	if( r != NULL ) {
 		ap_rputs(buffer, r);
 	}
@@ -180,7 +180,7 @@ void errorfunc(HSQUIRRELVM v, const SQChar* s, ...) {
 	vsprintf(buffer, s, vl);
 	va_end(vl);
 
-	request_rec* r = getRequestRec(v);
+	request_rec* r = get_request_rec(v);
 	if( r != NULL ) {
 		// should we sent the error to the client?
 		if( 1 ) {
@@ -208,7 +208,7 @@ void errorfunc(HSQUIRRELVM v, const SQChar* s, ...) {
  * This differs from the regular SQ vargv in that it is a table
  * where key => val and not just an array
  */
-void populateARGS(HSQUIRRELVM v, request_rec* r) {
+void populate_args(HSQUIRRELVM v, request_rec* r) {
 	char* tok;
 	char* key;
 	char* val;
@@ -251,7 +251,7 @@ void populateARGS(HSQUIRRELVM v, request_rec* r) {
 /**
  * Populate the _COOKIE global from the request headers
  */
-void populateCOOKIE(HSQUIRRELVM v, request_rec* r) {
+void populate_cookie(HSQUIRRELVM v, request_rec* r) {
 	char* tok;
 	char* key;
 	char* val;
@@ -291,10 +291,10 @@ void populateCOOKIE(HSQUIRRELVM v, request_rec* r) {
 /**
  * Populate the _SERVER global
  */
-void populateSERVER(HSQUIRRELVM v, request_rec* r) {
+void populate_server(HSQUIRRELVM v, request_rec* r) {
 	sq_pushstring(v, "_SERVER", -1);
 	sq_newtable(v);
- 
+
 	// TODO: there has to be a better way to do this,
 	// since I am doing the same three lines of code
 	// over and over again for different values
@@ -402,7 +402,7 @@ void populateSERVER(HSQUIRRELVM v, request_rec* r) {
 	char key[25];
 	for (i = 0; i < barr->nelts; ++i) {
 		sprintf(key, "http_%s", belt[i].key);
-		toLowerCase(key);
+		to_lower_case(key);
 
 		sq_pushstring(v, key, -1);
 		sq_pushstring(v, belt[i].val, -1);
@@ -440,7 +440,7 @@ void populateSERVER(HSQUIRRELVM v, request_rec* r) {
  * but i would like to preserve some functionality
  * that is accessible in the regular squirrel
  */
-int populateVargv(HSQUIRRELVM v, char* query) {
+int populate_vargv(HSQUIRRELVM v, char* query) {
 	int retval = 1;
 	if( query == NULL ) {
 		return retval;
@@ -483,7 +483,7 @@ SQInteger header(HSQUIRRELVM v) {
 	char* val;
 	const char* param;
 	SQInteger status;
-	request_rec* r = getRequestRec(v);
+	request_rec* r = get_request_rec(v);
 
 	// grab function param
 	if( sq_gettype(v, 2) != OT_STRING ) {
@@ -597,9 +597,9 @@ static int sq_handler(request_rec *r) {
 	sq_pushstring(v, r->args, -1);
 	sq_newslot(v, -3, SQFalse);
 
-	populateARGS(v, r);
-	populateCOOKIE(v, r);
-	populateSERVER(v, r);
+	populate_args(v, r);
+	populate_cookie(v, r);
+	populate_server(v, r);
 	sq_pop(v, 1);
 
 	// open requested file
@@ -645,7 +645,7 @@ static int sq_handler(request_rec *r) {
 	register_global_func(v, sq_unlink, "unlink", "ts");
 
 	// populate the regular vargv global
-	int args = populateVargv(v, r->args);
+	int args = populate_vargv(v, r->args);
 
 	ap_log_rerror(APLOG_MARK, APLOG_DEBUG, OK, r, "arg count: %d", args);
 	ap_log_rerror(APLOG_MARK, APLOG_DEBUG, OK, r, "args: %s", r->args);

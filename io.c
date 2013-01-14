@@ -1,7 +1,7 @@
 /**
  * mod_sq - Apache module for running Squirrel files
  *
- * Copyright 2011 Nathan Levin-Greenhaw <nathan@njlg.info>
+ * Copyright 2011-2013 Nathan Levin-Greenhaw <nathan@njlg.info>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ SQInteger file_get_contents(HSQUIRRELVM v) {
 	apr_finfo_t finfo;
 	apr_size_t nbytes;
 	apr_status_t status;
-	request_rec* r = getRequestRec(v);
+	request_rec* r = get_request_rec(v);
 
 	// for error messages
 	char error[120];
@@ -88,7 +88,7 @@ SQInteger file_put_contents(HSQUIRRELVM v) {
 	apr_file_t* file;
 	apr_size_t nbytes;
 	apr_status_t status;
-	request_rec* r = getRequestRec(v);
+	request_rec* r = get_request_rec(v);
 
 	// for error messages
 	char error[120];
@@ -142,7 +142,7 @@ SQInteger file_put_contents(HSQUIRRELVM v) {
 SQInteger sq_unlink(HSQUIRRELVM v) {
 	const SQChar* filename;
 	apr_status_t status;
-	request_rec* r = getRequestRec(v);
+	request_rec* r = get_request_rec(v);
 
 	char errorMessage[120];
 	char error[120];
@@ -181,8 +181,8 @@ SQInteger file_exists(HSQUIRRELVM v) {
 	const SQChar* filename;
 	apr_finfo_t finfo;
 	apr_status_t status;
-	request_rec* r = getRequestRec(v);
-	
+	request_rec* r = get_request_rec(v);
+
 	ap_log_rerror(APLOG_MARK, APLOG_DEBUG, 0, r, "file_exists()");
 
 	// grab function param
@@ -193,7 +193,7 @@ SQInteger file_exists(HSQUIRRELVM v) {
 	if( SQ_FAILED(sq_getstring(v, 2, &filename)) ) {
 		return SQ_ERROR;
 	}
-	
+
 	ap_log_rerror(APLOG_MARK, APLOG_DEBUG, 0, r, "    file_exists(%s)", filename);
 
 	status = apr_stat(&finfo, filename, APR_FINFO_CSIZE, r->pool);

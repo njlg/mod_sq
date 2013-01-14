@@ -1,7 +1,7 @@
 /**
  * mod_sq - Apache module for running Squirrel files
  *
- * Copyright 2011 Nathan Levin-Greenhaw <nathan@njlg.info>
+ * Copyright 2011-2013 Nathan Levin-Greenhaw <nathan@njlg.info>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@
 
 #include "squirrel.h"
 
-request_rec* getRequestRec(HSQUIRRELVM v);
+request_rec* get_request_rec(HSQUIRRELVM v);
 
 // squirrel functions
 SQInteger file_exists(HSQUIRRELVM v);
