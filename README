@@ -13,7 +13,7 @@ To build and install mod_sq:
 1. Make sure you have Apache and Squirrel installed and
    all the headers and libraries installed.
 2. Run 'autoreconf -vfi'
-3. Run '/configure'
+3. Run './configure'
 4. Run 'make'
 5. Run 'make install'
 
