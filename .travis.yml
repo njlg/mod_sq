@@ -2,5 +2,17 @@ language: c
 compiler:
   - gcc
   - clang
-before_script: autoreconf -vfi
+before_script:
+  - sudo apt-get install apache2
+  - wget http://squirrel.googlecode.com/files/squirrel_3_0_4_stable.tar.gz
+  - tar xzvf squirrel_3_0_4_stable.tar.gz
+  - wget https://raw.github.com/njlg/gentoo-overlay/master/dev-lang/squirrel/files/squirrel-3.0.4-autotools.patch
+  - patch -p0 < squirrel-3.0.4-autotools.patch
+  - cd SQUIRREL3
+  - mkdir m4
+  - autoreconf -vfi
+  - ./configure
+  - make && make install
+  - cd ..
+  - autoreconf -vfi
 script: ./configure && make
