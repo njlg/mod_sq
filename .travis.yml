@@ -6,7 +6,7 @@ before_script:
   - sudo apt-get install apache2
   - wget http://squirrel.googlecode.com/files/squirrel_3_0_4_stable.tar.gz
   - tar xzvf squirrel_3_0_4_stable.tar.gz
-  - wget https://raw.github.com/njlg/gentoo-overlay/master/dev-lang/squirrel/files/squirrel-3.0.4-autotools.patch
+  - wget https://gist.github.com/raw/4536505/d9c3f6a78a1aa09999872e86191fe368cd7884ff/squirrel-3.0.4-autotools.patch
   - patch -p0 < squirrel-3.0.4-autotools.patch
   - cd SQUIRREL3
   - mkdir m4
@@ -19,3 +19,5 @@ script: ./configure && make
 after_failure:
  - cd /home/travis/builds/njlg/mod_sq/SQUIRREL3
  - cat libsqstdlib.la
+ - cat libsquirrel.la
+ - cat Makefile
