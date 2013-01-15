@@ -1,23 +1,21 @@
 language: c
 compiler:
-  - gcc
-  - clang
+    - gcc
+    - clang
 before_script:
-  - sudo apt-get install apache2
-  - wget http://squirrel.googlecode.com/files/squirrel_3_0_4_stable.tar.gz
-  - tar xzvf squirrel_3_0_4_stable.tar.gz
-  - wget https://raw.github.com/njlg/gentoo-overlay/master/dev-lang/squirrel/files/squirrel-3.0.4-autotools.patch
-  - patch -p0 < squirrel-3.0.4-autotools.patch
-  - cd SQUIRREL3
-  - mkdir m4
-  - autoreconf -vfi
-  - ./configure
-  - make && make install
-  - cd ..
-  - autoreconf -vfi
+    - sudo apt-get install apache2
+    - wget http://squirrel.googlecode.com/files/squirrel_3_0_4_stable.tar.gz
+    - tar xzvf squirrel_3_0_4_stable.tar.gz
+    - wget https://raw.github.com/njlg/gentoo-overlay/master/dev-lang/squirrel/files/squirrel-3.0.4-autotools.patch
+    - patch -p0 < squirrel-3.0.4-autotools.patch
+    - cd SQUIRREL3
+    - mkdir m4
+    - autoreconf -vfi
+    - ./configure
+    - make && make install
+    - cd ..
+    - autoreconf -vfi
 script: ./configure && make
-after_failure:
- - cd /home/travis/builds/njlg/mod_sq/SQUIRREL3
- - cat libsqstdlib.la
- - cat libsquirrel.la
- - cat Makefile
+after_script:
+    - sudo make install
+    - sudo service apache2 restart
