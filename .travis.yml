@@ -16,3 +16,6 @@ before_script:
   - cd ..
   - autoreconf -vfi
 script: ./configure && make
+after_failure:
+ - cd /home/travis/builds/njlg/mod_sq/SQUIRREL3
+ - cat libsqstdlib.la
