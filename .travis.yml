@@ -12,10 +12,9 @@ before_script:
     - mkdir m4
     - autoreconf -vfi
     - ./configure
-    - make && make install
+    - make && sudo make install
     - cd ..
     - autoreconf -vfi
-script: ./configure && make
+script: ./configure && make && sudo make install
 after_script:
-    - sudo make install
     - sudo service apache2 restart
