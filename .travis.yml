@@ -17,9 +17,12 @@ before_script:
     - autoreconf -vfi
 script: ./configure && make && sudo make install
 after_script:
-    - ldd ./libs/mod_sq.so
+    - ldd /home/travis/builds/njlg/mod_sq/.libs/mod_sq.so
     - ldd /usr/lib/apache2/modules/mod_sq.so
     - ldd /usr/local/lib/libsquirrel-3.0.4.so
+    - cat /etc/ld.so.conf
+    - ldconfig -p
+    - sudo ldconfig
     - echo "$(curl https://gist.github.com/raw/4545578/82ef48d68db1b76e6a784b6ceb44c026f12d289c/squirrel.apacheconf)" | sudo tee /etc/apache2/mods-available/squirrel.load > /dev/null
     - sudo a2enmod squirrel
     - echo "$(curl https://gist.github.com/raw/4545575/c62ecef2ce0bb50b1110ce7f2ad59efb2366c9d8/default)" | sed -e "s,PATH,`pwd`/examples,g" | sudo tee /etc/apache2/sites-available/default > /dev/null
