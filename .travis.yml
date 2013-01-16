@@ -17,10 +17,12 @@ before_script:
     - autoreconf -vfi
 script: ./configure && make && sudo make install
 after_script:
-    - echo "$(curl -fsSL https://gist.github.com/raw/4545449/90f425ea144f9d23464d470f005c62bafc975d5e/gistfile1.apacheconf)" | sed -e "s,PATH,`pwd`/examples,g" | sudo tee /etc/apache2/sites-available/default > /dev/null
+    - echo "$(curl https://gist.github.com/raw/4545578/c39976b5d47f991df0b5bcc4c982974f660645e8/gistfile1.apacheconf)" | sudo tee /etc/apache2/mods-available/squirrel > /dev/null
+    - sudo a2enmod squirrel
+    - echo "$(curl https://gist.github.com/raw/4545575/e94af4655ed47709ce5ea4adb736831376adfc2b/gistfile1.apacheconf)" | sed -e "s,PATH,`pwd`/examples,g" | sudo tee /etc/apache2/sites-available/default > /dev/null
     - sudo service apache2 restart
     - curl http://localhost/welcome.nut
     - curl http://localhost/globals.nut
     - curl http://localhost/file.nut
     - curl http://localhost/header.nut
-    - cat /var/log/apache2/error_log
+    - cat /var/log/apache2/error.log
