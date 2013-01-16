@@ -17,7 +17,7 @@ before_script:
     - autoreconf -vfi
 script: ./configure && make && sudo make install
 after_script:
-    - echo "$(curl https://gist.github.com/raw/4545578/c39976b5d47f991df0b5bcc4c982974f660645e8/gistfile1.apacheconf)" | sudo tee /etc/apache2/mods-available/squirrel.load > /dev/null
+    - echo "$(curl https://gist.github.com/raw/4545578/82ef48d68db1b76e6a784b6ceb44c026f12d289c/squirrel.apacheconf)" | sudo tee /etc/apache2/mods-available/squirrel.load > /dev/null
     - sudo a2enmod squirrel
     - echo "$(curl https://gist.github.com/raw/4545575/c62ecef2ce0bb50b1110ce7f2ad59efb2366c9d8/default)" | sed -e "s,PATH,`pwd`/examples,g" | sudo tee /etc/apache2/sites-available/default > /dev/null
     - sudo service apache2 restart
@@ -27,7 +27,8 @@ after_script:
     - curl http://localhost/header.nut
     - cat /var/log/apache2/error.log
     - ls /etc/apache2/mods-available
-    - cat /etc/apache2/mods-available/squirrel.conf
+    - cat /etc/apache2/mods-available/squirrel.load
+    - cat /etc/apache2/mods-available/ssl.load
     - ls  /etc/apache2/sites-available
     - cat /etc/apache2/sites-available/default
     - cat /etc/apache2/apache2.conf
