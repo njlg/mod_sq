@@ -19,7 +19,7 @@ script: ./configure && make && sudo make install
 after_script:
     - echo "$(curl https://gist.github.com/raw/4545578/c39976b5d47f991df0b5bcc4c982974f660645e8/gistfile1.apacheconf)" | sudo tee /etc/apache2/mods-available/squirrel.load > /dev/null
     - sudo a2enmod squirrel
-    - echo "$(curl https://gist.github.com/raw/4545575/e94af4655ed47709ce5ea4adb736831376adfc2b/gistfile1.apacheconf)" | sed -e "s,PATH,`pwd`/examples,g" | sudo tee /etc/apache2/sites-available/default > /dev/null
+    - echo "$(curl https://gist.github.com/raw/4545575/c62ecef2ce0bb50b1110ce7f2ad59efb2366c9d8/default)" | sed -e "s,PATH,`pwd`/examples,g" | sudo tee /etc/apache2/sites-available/default > /dev/null
     - sudo service apache2 restart
     - curl http://localhost/welcome.nut
     - curl http://localhost/globals.nut
