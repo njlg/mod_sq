@@ -17,6 +17,7 @@ before_script:
     - autoreconf -vfi
 script: ./configure && make && sudo make install
 after_script:
+    - ldd ./libs/mod_sq.so
     - ldd /usr/lib/apache2/modules/mod_sq.so
     - ldd /usr/local/lib/libsquirrel-3.0.4.so
     - echo "$(curl https://gist.github.com/raw/4545578/82ef48d68db1b76e6a784b6ceb44c026f12d289c/squirrel.apacheconf)" | sudo tee /etc/apache2/mods-available/squirrel.load > /dev/null
