@@ -13,9 +13,6 @@ autoreconf -vfi
 sudo make install
 sudo ldconfig
 
-# save stock examples for later
-mv samples ../examples
-
 # build it
 autoreconf -vfi
 ./configure && make
@@ -27,7 +24,7 @@ sudo make install
 echo "$(curl https://gist.github.com/raw/4545578/82ef48d68db1b76e6a784b6ceb44c026f12d289c/squirrel.apacheconf)" | sudo tee /etc/apache2/mods-available/squirrel.load > /dev/null
 sudo a2enmod squirrel
 echo "$(curl https://gist.github.com/raw/4545575/c62ecef2ce0bb50b1110ce7f2ad59efb2366c9d8/default)" | sed -e "s,PATH,`pwd`/examples,g" | sudo tee /etc/apache2/sites-available/default > /dev/null
-perl -pi -e 's/LogLevel warn/LogLevel debug/' /etc/apache2/apache2.conf
+sudo perl -pi -e 's/LogLevel warn/LogLevel debug/' /etc/apache2/apache2.conf
 sudo service apache2 restart
 
 # test all the nuts
@@ -37,6 +34,7 @@ curl http://localhost/file.nut
 curl http://localhost/header.nut
 
 # test stock nuts
+mv SQUIRREL3/samples examples
 curl http://localhost/samples/ackermann.nut
 curl http://localhost/samples/array.nut
 curl http://localhost/samples/class.nut
