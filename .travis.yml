@@ -2,4 +2,4 @@ language: c
 compiler:
     - gcc
     - clang
-script: ./travis/run.sh
+script: .travis/run.sh
