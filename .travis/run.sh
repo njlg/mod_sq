@@ -14,6 +14,7 @@ sudo make install
 sudo ldconfig
 
 # build it
+cd ..
 autoreconf -vfi
 ./configure && make
 
