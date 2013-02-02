@@ -2,6 +2,8 @@
 
 Apache module for running Squirrel files
 
+[![Build Status](https://travis-ci.org/njlg/mod_sq.png?branch=master)](https://travis-ci.org/njlg/mod_sq)
+
 ## Overview
 
 Mod_sq is an Apache web server module that will handle creating a Squirrel
@@ -30,7 +32,7 @@ To build and install mod_sq:
 * Copy the example nuts (either from Squirrel or mod_sq) to somewhere in your htdocs area
 * Point your browser to one of the example nuts
 
-# Addendum
+## Addendum
 
 mod_sq Homepage: [http://github.com/njlg/mod_sq](http://github.com/njlg/mod_sq)
 
