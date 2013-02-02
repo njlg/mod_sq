@@ -509,7 +509,7 @@ SQInteger header(HSQUIRRELVM v) {
 		if( status >= 300 ) {
 			ap_log_rerror(APLOG_MARK, APLOG_DEBUG, 0, r, "  header(%s, %s)", key, val);
 			apr_table_add(r->err_headers_out, key, val);
-			return;
+			return 0;
 		}
 	}
 
